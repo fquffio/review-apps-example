@@ -14,8 +14,6 @@ jobs:
   start_review:
     docker:
       - image: circleci/python
-    branches:
-      ignore: master
     steps:
       - checkout
       - run:
@@ -48,6 +46,9 @@ workflows:
           requires:
             - build
           context: review-man-wtf
+          filters:
+            branches:
+              ignore: master
       - hold:
           type: approval
           requires:
