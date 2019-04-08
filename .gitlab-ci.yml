@@ -31,7 +31,7 @@ start_review:
       - schedules
       - tags
   dependencies:
-    - dist_development
+    - build
 
 stop_review:
   stage: deploy
