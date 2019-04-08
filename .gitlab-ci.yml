@@ -15,7 +15,7 @@ build:
       - public/
     expire_in: 30 days
 
-# Start or re-deploy review application: run `make start` and use
+# Start or re-deploy review application: run `make review-start` and use
 # URL-friendly branch name as the review app "alias".
 start_review:
   stage: deploy
@@ -23,7 +23,7 @@ start_review:
   before_script:
     - pip install -q awscli
   script:
-    - make start ALIAS=$CI_COMMIT_REF_SLUG
+    - make review-start ALIAS=$CI_COMMIT_REF_SLUG
   environment:
     name: "development/${CI_COMMIT_REF_SLUG}"
     url: "https://${CI_COMMIT_REF_SLUG}.review.man.wtf/"
@@ -36,7 +36,7 @@ start_review:
   dependencies:
     - build
 
-# Stop a review application: run `make stop`.
+# Stop a review application: run `make review-stop`.
 # This job is automatically executed when a Merge Request is closed.
 stop_review:
   stage: deploy
@@ -44,7 +44,7 @@ stop_review:
   before_script:
     - pip install -q awscli
   script:
-    - make stop ALIAS=$CI_COMMIT_REF_SLUG
+    - make review-stop ALIAS=$CI_COMMIT_REF_SLUG
   environment:
     name: "development/${CI_COMMIT_REF_SLUG}"
     url: "https://${CI_COMMIT_REF_SLUG}.review.man.wtf/"
