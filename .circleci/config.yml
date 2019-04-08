@@ -1,0 +1,54 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node
+    steps:
+      - checkout
+      - run: cp src/* public/
+      - persist_to_workspace:
+          root: '.'
+          paths:
+            - public
+
+  start_review:
+    docker:
+      - image: circleci/python
+    steps:
+      - run:
+          name: Install AWS CLI
+          command: sudo pip install awscli
+      - attach_workspace:
+          at: '.'
+      - deploy:
+          name: Start review app
+          command: make review-start ALIAS=$CIRCLE_BRANCH
+
+  stop_review:
+    docker:
+      - image: circleci/python
+    steps:
+      - run:
+          name: Install AWS CLI
+          command: sudo pip install awscli
+      - deploy:
+          name: Stop review app
+          command: make review-stop ALIAS=$CIRCLE_BRANCH
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - review_start:
+          requires:
+            - build
+          context: review-man-wtf
+      - hold:
+          type: approval
+          requires:
+            - review_start
+      - review_stop:
+          requires:
+            - hold
+          context: review-man-wtf
