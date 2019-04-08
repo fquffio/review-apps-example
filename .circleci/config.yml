@@ -40,15 +40,15 @@ workflows:
   build-and-deploy:
     jobs:
       - build
-      - review_start:
+      - start_review:
           requires:
             - build
           context: review-man-wtf
       - hold:
           type: approval
           requires:
-            - review_start
-      - review_stop:
+            - start_review
+      - stop_review:
           requires:
             - hold
           context: review-man-wtf
