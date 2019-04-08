@@ -2,7 +2,7 @@ all: help
 .PHONY: start stop
 
 # Change this value to match your domain:
-CNAME := review-gitlab.man.wtf
+CNAME := review.man.wtf
 
 # Set this to the path where built sources are placed:
 SRC_DIR ?= public

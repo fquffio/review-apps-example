@@ -3,6 +3,7 @@ stages:
   - build
   - deploy
 
+# Dummy build job: simply copy files from one directory to another.
 build:
   stage: build
   image: ubuntu
@@ -14,6 +15,8 @@ build:
       - public/
     expire_in: 30 days
 
+# Start or re-deploy review application: run `make start` and use
+# URL-friendly branch name as the review app "alias".
 start_review:
   stage: deploy
   image: python
@@ -23,7 +26,7 @@ start_review:
     - make start ALIAS=$CI_COMMIT_REF_SLUG
   environment:
     name: "development/${CI_COMMIT_REF_SLUG}"
-    url: "https://${CI_COMMIT_REF_SLUG}.review-gitlab.man.wtf/"
+    url: "https://${CI_COMMIT_REF_SLUG}.review.man.wtf/"
     on_stop: stop_review
   except:
     refs:
@@ -33,6 +36,8 @@ start_review:
   dependencies:
     - build
 
+# Stop a review application: run `make stop`.
+# This job is automatically executed when a Merge Request is closed.
 stop_review:
   stage: deploy
   image: python
@@ -42,7 +47,7 @@ stop_review:
     - make stop ALIAS=$CI_COMMIT_REF_SLUG
   environment:
     name: "development/${CI_COMMIT_REF_SLUG}"
-    url: "https://${CI_COMMIT_REF_SLUG}.review-gitlab.man.wtf/"
+    url: "https://${CI_COMMIT_REF_SLUG}.review.man.wtf/"
     action: stop
   when: manual
   except:
