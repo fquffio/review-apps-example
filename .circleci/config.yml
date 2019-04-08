@@ -14,6 +14,8 @@ jobs:
   start_review:
     docker:
       - image: circleci/python
+    branches:
+      ignore: master
     steps:
       - checkout
       - run:
