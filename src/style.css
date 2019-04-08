@@ -1,0 +1,15 @@
+body {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 2em;
+  background-color: crimson;
+}
+
+main {
+  max-width: 1024px;
+  margin: auto;
+}
+
+main h1 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 3em;
+}
