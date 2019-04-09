@@ -25,18 +25,6 @@ jobs:
           name: Start review app
           command: make review-start ALIAS=$CIRCLE_BRANCH
 
-  stop_review:
-    docker:
-      - image: circleci/python
-    steps:
-      - checkout
-      - run:
-          name: Install AWS CLI
-          command: sudo pip install awscli
-      - deploy:
-          name: Stop review app
-          command: make review-stop ALIAS=$CIRCLE_BRANCH
-
 workflows:
   version: 2
   build-and-deploy:
@@ -49,11 +37,3 @@ workflows:
           filters:
             branches:
               ignore: master
-      - hold:
-          type: approval
-          requires:
-            - start_review
-      - stop_review:
-          requires:
-            - hold
-          context: review-man-wtf
